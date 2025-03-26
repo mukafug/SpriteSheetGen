@@ -951,89 +951,89 @@
 <body>
     <div class="container fade-in">
         <div class="header">
-            <h1>Generator Sprite Sheet</h1>
-            <p>Gabungkan beberapa gambar menjadi satu sprite sheet dengan mudah. Cukup seret dan lepas gambar Anda!</p>
+            <h1>Sprite Sheet Generator</h1>
+            <p>Combine multiple images into a single sprite sheet with ease. Just drag and drop your images!</p>
         </div>
 
         <div class="drop-area" id="drop-area">
             <i class="fas fa-cloud-upload-alt pulse"></i>
-            <h3>Seret & Lepas Gambar di Sini</h3>
-            <p>atau</p>
+            <h3>Drag & Drop Images Here</h3>
+            <p>or</p>
             <input type="file" id="file-input" class="file-input" accept="image/*" multiple>
-            <button class="btn" id="select-files">Pilih Gambar</button>
+            <button class="btn" id="select-files">Select Images</button>
         </div>
 
         <div class="options">
-            <h3><i class="fas fa-cog"></i> Pengaturan</h3>
+            <h3><i class="fas fa-cog"></i> Settings</h3>
             <div class="option-group">
-                <label for="gap">Jarak antar gambar (px):</label>
+                <label for="gap">Gap between images (px):</label>
                 <input type="number" id="gap" value="0" min="0" max="100">
             </div>
             <div class="option-group">
-                <label for="background-color">Warna latar belakang:</label>
+                <label for="background-color">Background color:</label>
                 <input type="color" id="background-color" value="#242F40">
             </div>
             <div class="option-group">
-                <label for="arrange">Pengaturan gambar:</label>
+                <label for="arrange">Image arrangement:</label>
                 <select id="arrange">
-                    <option value="horizontal">Horizontal (ke kanan)</option>
-                    <option value="vertical">Vertikal (ke bawah)</option>
-                    <option value="grid">Grid (sesuaikan baris)</option>
-                    <option value="custom">Ukuran Kustom</option>
+                    <option value="horizontal">Horizontal (to right)</option>
+                    <option value="vertical">Vertical (downward)</option>
+                    <option value="grid">Grid (adjust rows)</option>
+                    <option value="custom">Custom Size</option>
                 </select>
             </div>
             <div class="option-group" id="grid-options" style="display: none;">
-                <label for="grid-columns">Jumlah kolom:</label>
+                <label for="grid-columns">Number of columns:</label>
                 <input type="number" id="grid-columns" value="4" min="1" max="20">
             </div>
             <div class="option-group" id="custom-size-options" style="display: none;">
-                <label for="custom-width">Ukuran Kustom (px):</label>
+                <label for="custom-width">Custom Size (px):</label>
                 <div class="size-inputs">
-                    <input type="number" id="custom-width" placeholder="Lebar" value="888">
+                    <input type="number" id="custom-width" placeholder="Width" value="888">
                     <span class="size-separator">×</span>
-                    <input type="number" id="custom-height" placeholder="Tinggi" value="2672">
+                    <input type="number" id="custom-height" placeholder="Height" value="2672">
                 </div>
                 <div class="checkbox-group">
                     <input type="checkbox" id="maintain-aspect" checked>
-                    <label for="maintain-aspect">Pertahankan resolusi asli</label>
+                    <label for="maintain-aspect">Maintain original resolution</label>
                 </div>
                 <div class="checkbox-group">
                     <input type="checkbox" id="auto-scale" checked>
-                    <label for="auto-scale">Sesuaikan ukuran gambar jika diperlukan</label>
+                    <label for="auto-scale">Adjust image size if needed</label>
                 </div>
                 <div class="checkbox-group">
                     <input type="checkbox" id="force-dimensions" checked>
-                    <label for="force-dimensions">Paksa gunakan dimensi tepat seperti yang ditentukan</label>
+                    <label for="force-dimensions">Force use exact dimensions as specified</label>
                 </div>
             </div>
         </div>
 
         <div class="preview-area fade-in">
-            <h3><i class="fas fa-images"></i> Pratinjau Gambar <span id="image-count">(0 gambar)</span></h3>
+            <h3><i class="fas fa-images"></i> Image Preview <span id="image-count">(0 images)</span></h3>
             <div class="images-container" id="images-container">
                 <div class="empty-state">
                     <i class="fas fa-images"></i>
-                    <p>Tambahkan gambar untuk mulai membuat sprite sheet</p>
+                    <p>Add images to start creating sprite sheet</p>
                 </div>
             </div>
             <div class="actions">
-                <button class="btn btn-accent" id="clear-all" disabled><i class="fas fa-trash-alt"></i> Hapus Semua</button>
-                <button class="btn" id="sort-by-name" disabled><i class="fas fa-sort-alpha-down"></i> Urutkan A-Z</button>
-                <button class="btn" id="generate-sprite" disabled><i class="fas fa-magic"></i> Buat Sprite Sheet</button>
+                <button class="btn btn-accent" id="clear-all" disabled><i class="fas fa-trash-alt"></i> Clear All</button>
+                <button class="btn" id="sort-by-name" disabled><i class="fas fa-sort-alpha-down"></i> Sort A-Z</button>
+                <button class="btn" id="generate-sprite" disabled><i class="fas fa-magic"></i> Generate Sprite Sheet</button>
             </div>
         </div>
 
         <div class="result-area fade-in" style="display: none;" id="result-area">
-            <h3><i class="fas fa-check-circle"></i> Hasil Sprite Sheet</h3>
-            <div id="sprite-dimensions"><i class="fas fa-ruler-combined"></i> Dimensi: 0px × 0px</div>
+            <h3><i class="fas fa-check-circle"></i> Sprite Sheet Result</h3>
+            <div id="sprite-dimensions"><i class="fas fa-ruler-combined"></i> Dimensions: 0px × 0px</div>
             <canvas id="sprite-result"></canvas>
             <div class="actions">
-                <button class="btn" id="download-sprite"><i class="fas fa-download"></i> Unduh Sprite Sheet</button>
-                <button class="btn" id="download-json"><i class="fas fa-file-code"></i> Unduh Data JSON</button>
+                <button class="btn" id="download-sprite"><i class="fas fa-download"></i> Download Sprite Sheet</button>
+                <button class="btn" id="download-json"><i class="fas fa-file-code"></i> Download JSON Data</button>
             </div>
         </div>
         <footer>
-            <p>© 2025 Lada Hitam Creation | Generator Sprite Sheet | All Rights Reserved</p>
+            <p>© 2025 Lada Hitam Creation | Sprite Sheet Generator | All Rights Reserved</p>
         </footer>
     </div>
 
@@ -1157,7 +1157,7 @@
                 const imageFiles = files.filter(file => file.type.startsWith('image/'));
                 
                 if (imageFiles.length === 0) {
-                    alert('Mohon pilih hanya file gambar (JPG, PNG, GIF, dll).');
+                    alert('Please select only image files (JPG, PNG, GIF, etc).');
                     return;
                 }
                 
@@ -1212,7 +1212,7 @@
                     imagesContainer.innerHTML = `
                         <div class="empty-state">
                             <i class="fas fa-images"></i>
-                            <p>Tambahkan gambar untuk mulai membuat sprite sheet</p>
+                            <p>Add images to start creating sprite sheet</p>
                         </div>
                     `;
                     return;
@@ -1267,7 +1267,7 @@
                 });
                 
                 // Update image count
-                imageCountSpan.textContent = `(${images.length} gambar)`;
+                imageCountSpan.textContent = `(${images.length} images)`;
             }
             
             function setupDragAndDrop() {
@@ -1986,7 +1986,7 @@
                     
                     // Check if the canvas is valid
                     if (!canvas || canvas.width === 0 || canvas.height === 0) {
-                        alert('Tidak dapat mengunduh sprite sheet. Canvas tidak valid.');
+                        alert('Cannot download sprite sheet. Invalid canvas.');
                         return;
                     }
                     
@@ -2052,7 +2052,7 @@
                     console.log("Download initiated successfully");
                 } catch (e) {
                     console.error("Error downloading sprite sheet: ", e);
-                    alert("Terjadi kesalahan saat mengunduh sprite sheet: " + e.message);
+                    alert("An error occurred while downloading the sprite sheet: " + e.message);
                 }
             }
             
