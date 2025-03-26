@@ -1,93 +1,74 @@
-# 🎮 Generator Sprite Sheet
+# 🎮 Sprite Sheet Generator
 
-![Versi](https://img.shields.io/badge/versi-1.0.0-blue)
-![Lisensi](https://img.shields.io/badge/lisensi-MIT-green)
-![Bahasa](https://img.shields.io/badge/bahasa-HTML%20%7C%20CSS%20%7C%20JavaScript-orange)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Language](https://img.shields.io/badge/language-HTML%20%7C%20CSS%20%7C%20JavaScript-orange)
 
-<div align="center">
-  <img src="https://i.imgur.com/YourBannerImage.png" alt="Banner Generator Sprite Sheet" width="800px">
-  <p><i>Cara mudah dan cepat untuk membuat sprite sheet dari gambar individu</i></p>
-</div>
+## ✨ Main Features
 
-## ✨ Fitur Utama
-
-- 🖼️ **Seret & Lepas** - Unggah gambar dengan mudah menggunakan antarmuka seret dan lepas
-- 🧩 **Pengaturan Fleksibel** - Atur jarak antar gambar dan warna latar belakang
-- 📏 **Berbagai Mode Layout** - Horizontal, vertikal, grid, atau ukuran kustom
-- 🔄 **Pengurutan Gambar** - Susun ulang gambar dengan seret dan lepas yang interaktif
-- 💾 **Ekspor Hasil** - Unduh sprite sheet sebagai PNG dengan latar belakang transparan
-- 📊 **Data JSON** - Ekspor data koordinat frame untuk digunakan dalam game engine
+- 🖼️ **Drag & Drop** - Easily upload images using a drag-and-drop interface
+- 🧩 **Flexible Settings** - Adjust spacing between images and background color
+- 📏 **Various Layout Modes** - Horizontal, vertical, grid, or custom size
+- 🔄 **Image Sorting** - Rearrange images with an interactive drag-and-drop feature
+- 💾 **Export Results** - Download the sprite sheet as PNG with a transparent background
+- 📊 **JSON Data** - Export frame coordinate data for use in game engines
 
 ## 🚀 Demo
 
-Kunjungi [tautan demo langsung](https://yourdemolink.com) untuk mencoba Generator Sprite Sheet tanpa perlu menginstal.
+Visit [live demo link](https://mukafug.github.io/SpriteSheetGen/) to try the Sprite Sheet Generator without installation.
 
-## 📸 Tangkapan Layar
+## 📸 Screenshots
 
 <div align="center">
-  <img src="https://i.imgur.com/Screenshot1.png" width="45%" alt="Screenshot 1">
-  <img src="https://i.imgur.com/Screenshot2.png" width="45%" alt="Screenshot 2">
+  <img src="https://imgur.com/0SaDpH0" width="45%" alt="Screenshot 1">
+  <img src="https://imgur.com/O90YJ4y" width="45%" alt="Screenshot 2">
 </div>
 
-## 🛠️ Teknologi
+## 🛠️ Technology
 
-Generator Sprite Sheet dibangun menggunakan teknologi web standar:
+The Sprite Sheet Generator is built using standard web technologies:
 
-- **HTML5** - Struktur dasar aplikasi web
-- **CSS3** - Antarmuka pengguna modern dan responsif
-- **JavaScript** - Fungsionalitas dinamis dan manipulasi Canvas
-- **HTML5 Canvas API** - Untuk membuat dan memanipulasi sprite sheet
+- **HTML5** - The basic structure of the web application
+- **CSS3** - A modern and responsive user interface
+- **JavaScript** - Dynamic functionality and Canvas manipulation
+- **HTML5 Canvas API** - To create and manipulate sprite sheets
 
-## 📖 Cara Penggunaan
+## 📖 How to Use
 
-1. Buka `SpriteSheet.html` di browser web modern apa pun
-2. **Unggah Gambar**:
-   - Seret dan lepas gambar ke area unggah
-   - Atau klik "Pilih Gambar" untuk memilih dari perangkat Anda
-3. **Konfigurasi Sprite Sheet**:
-   - Atur jarak antar gambar (dalam piksel)
-   - Pilih warna latar belakang (default: #242F40)
-   - Pilih pengaturan gambar (horizontal, vertikal, grid, atau kustom)
-4. **Atur Urutan Gambar**:
-   - Seret gambar untuk mengubah urutan
-   - Klik "Urutkan A-Z" untuk mengurutkan berdasarkan nama file
-5. **Hasilkan Sprite Sheet**:
-   - Klik "Buat Sprite Sheet" untuk melihat pratinjau hasil
-6. **Ekspor**:
-   - Klik "Unduh Sprite Sheet" untuk mendapatkan file PNG
-   - Klik "Unduh Data JSON" untuk mendapatkan data koordinat
+1. Open `SpriteSheet.html` in any modern web browser.
+2. **Upload Images**:
+   - Drag and drop images into the upload area.
+   - Or click "Select Images" to choose from your device.
+3. **Configure the Sprite Sheet**:
+   - Set spacing between images (in pixels).
+   - Choose background color (default: #242F40).
+   - Select image layout (horizontal, vertical, grid, or custom).
+4. **Arrange Image Order**:
+   - Drag images to rearrange them.
+   - Click "Sort A-Z" to order them by filename.
+5. **Generate Sprite Sheet**:
+   - Click "Create Sprite Sheet" to preview the result.
+6. **Export**:
+   - Click "Download Sprite Sheet" to get a PNG file.
+   - Click "Download JSON Data" to get frame coordinate data.
 
-## ⚙️ Opsi Konfigurasi
+## ⚙️ Configuration Options
 
-| Opsi | Deskripsi |
-|------|-----------|
-| **Jarak antar gambar** | Jarak dalam piksel antar frame sprite |
-| **Warna latar belakang** | Warna latar belakang sprite sheet (transparan di file PNG yang diunduh) |
-| **Pengaturan gambar** | <ul><li>**Horizontal** - Semua gambar dalam satu baris</li><li>**Vertikal** - Semua gambar dalam satu kolom</li><li>**Grid** - Gambar dalam format grid</li><li>**Ukuran Kustom** - Tentukan dimensi kustom</li></ul> |
+| Option | Description |
+|--------|------------|
+| **Image Spacing** | Spacing in pixels between sprite frames |
+| **Background Color** | Background color of the sprite sheet (transparent in the downloaded PNG file) |
+| **Image Layout** | <ul><li>**Horizontal** - All images in one row</li><li>**Vertical** - All images in one column</li><li>**Grid** - Images arranged in a grid</li><li>**Custom Size** - Specify custom dimensions</li></ul> |
 
-## 💡 Kasus Penggunaan
+## 💡 Use Cases
 
-- Pengembangan game 2D
-- Animasi web
-- UI/UX dan desain antarmuka
-- Optimasi aset untuk aplikasi web dan seluler
+- 2D game development
+- Web animations
 
-## 🔮 Fitur Mendatang
+## 📄 License
 
-- [ ] Pratinjau animasi langsung dari sprite sheet
-- [ ] Opsi untuk memangkas area transparan dari gambar
-- [ ] Pembuatan sprite sheet untuk animasi dengan beberapa arah
-- [ ] Dukungan untuk packing atlas tekstur yang optimal
-- [ ] Integrasi dengan framework game populer
+This project is licensed under the [MIT License](LICENSE).
 
-## 📄 Lisensi
+## Credits
 
-Proyek ini dilisensikan di bawah [Lisensi MIT](LICENSE).
-
-## 🙏 Penghargaan
-
-Dikembangkan dengan ❤️ oleh [Lada Hitam Creation](https://github.com/yourusername).
-
-Ikon dari [Font Awesome](https://fontawesome.com/).
-Font dari [Google Fonts](https://fonts.google.com/).
-</div>
+Developed with ❤️ by [MkafuG at LadaHitamCreation](https://www.instagram.com/ladahitamcreation).
