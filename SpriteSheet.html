@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Sprite Sheet</title>
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary-color: #3b82f6;
+            --accent-color: #f43f5e;
+            --accent-hover: #e11d48;
+            --background-color: #0f172a;
+            --card-bg: #1e293b;
+            --card-bg-hover: #334155;
+            --text-color: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --success-color: #10b981;
+            --dark-surface: #0f172a;
+            --glass-effect: rgba(255, 255, 255, 0.05);
+            --glow-effect: 0 0 15px rgba(99, 102, 241, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 2rem;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.05) 0%, transparent 30%),
+                radial-gradient(circle at 90% 90%, rgba(244, 63, 94, 0.03) 0%, transparent 30%);
+            backdrop-filter: blur(120px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(59, 130, 246, 0.8));
+            color: white;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(59, 130, 246, 0.1));
+            z-index: 0;
+            backdrop-filter: blur(20px);
+        }
+
+        .header h1 {
+            margin-bottom: 1rem;
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .drop-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 1rem;
+            padding: 3rem;
+            text-align: center;
+            background-color: var(--card-bg);
+            margin-bottom: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            background-image: linear-gradient(135deg, var(--glass-effect), transparent);
+        }
+
+        .drop-area:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(99, 102, 241, 0.05);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px -15px rgba(0, 0, 0, 0.4);
+        }
+
+        .drop-area.highlight {
+            border-color: var(--accent-color);
+            background-color: rgba(244, 63, 94, 0.05);
+            box-shadow: 0 0 20px rgba(244, 63, 94, 0.3);
+        }
+
+        .drop-area i {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .drop-area h3 {
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
+            color: var(--text-color);
+            font-weight: 700;
+        }
+
+        .drop-area p {
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.875rem 1.75rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            margin: 0.75rem 0.5rem;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            box-shadow: 0 4px 10px rgba(244, 63, 94, 0.2);
+        }
+
+        .btn-accent:hover {
+            background-color: var(--accent-hover);
+            box-shadow: 0 8px 20px rgba(244, 63, 94, 0.3);
+        }
+
+        .btn-disabled {
+            background-color: var(--card-bg-hover);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .btn-disabled:hover {
+            background-color: var(--card-bg-hover);
+            transform: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .options {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(8px);
+            background-image: linear-gradient(135deg, var(--glass-effect), transparent);
+        }
+
+        .options h3 {
+            margin-bottom: 1.25rem;
+            color: var(--text-color);
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .option-group {
+            margin-bottom: 1.25rem;
+            background-color: rgba(15, 23, 42, 0.3);
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .option-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .option-group input, .option-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: var(--dark-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            color: var(--text-color);
+        }
+
+        .option-group input:focus, .option-group select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        .size-inputs {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .size-inputs input {
+            width: calc(50% - 0.5rem);
+        }
+
+        .size-inputs .size-separator {
+            line-height: 40px;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-top: 0.75rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.5rem;
+            accent-color: var(--primary-color);
+        }
+
+        .checkbox-group label {
+            display: inline;
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+
+        .preview-area {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(8px);
+            background-image: linear-gradient(135deg, var(--glass-effect), transparent);
+        }
+
+        .preview-area h3 {
+            margin-bottom: 1.25rem;
+            color: var(--text-color);
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .images-container {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding: 1.5rem 0.5rem;
+            gap: 1.25rem;
+            min-height: 180px;
+            background-color: rgba(15, 23, 42, 0.7);
+            border-radius: 0.75rem;
+            position: relative;
+            transition: all 0.3s ease;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) var(--dark-surface);
+        }
+
+        .images-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .images-container::-webkit-scrollbar-track {
+            background: var(--dark-surface);
+            border-radius: 10px;
+        }
+
+        .images-container::-webkit-scrollbar-thumb {
+            background-color: var(--primary-color);
+            border-radius: 10px;
+        }
+
+        .image-item {
+            position: relative;
+            min-width: 120px;
+            border: 2px solid transparent;
+            border-radius: 0.75rem;
+            overflow: visible;
+            cursor: grab;
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            margin-bottom: 2.75rem;
+            margin-top: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            background-color: rgba(30, 41, 59, 0.7);
+            transform-origin: center;
+          
+        }
+
+        .image-item:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3), 0 0 10px rgba(99, 102, 241, 0.3);
+            z-index: 10;
+        }
+
+        .image-item.dragging {
+            opacity: 0.7;
+            cursor: grabbing;
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.4), 0 0 15px rgba(99, 102, 241, 0.4);
+            z-index: 1000;
+            border: 2px dashed var(--primary-color);
+            background-color: rgba(99, 102, 241, 0.1);
+        }
+
+        .drop-placeholder {
+            background-color: rgba(99, 102, 241, 0.15);
+            border: 2px dashed var(--primary-color);
+            border-radius: 0.75rem;
+            min-width: 120px;
+            height: 140px;
+            position: absolute;
+            display: none;
+            z-index: 5;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3) inset;
+            animation: placeholder-pulse 1.5s infinite alternate;
+            pointer-events: none;
+            backdrop-filter: blur(5px);
+        }
+
+        @keyframes placeholder-pulse {
+            0% { box-shadow: 0 0 10px rgba(99, 102, 241, 0.2) inset; }
+            100% { box-shadow: 0 0 25px rgba(99, 102, 241, 0.4) inset; }
+        }
+
+        .drop-indicator {
+            position: absolute;
+            width: 4px;
+            background-color: var(--primary-color);
+            height: 140px;
+            border-radius: 4px;
+            z-index: 999;
+            animation: pulse-indicator 1s infinite alternate;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+            pointer-events: none;
+        }
+
+        @keyframes pulse-indicator {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Animasi untuk pergeseran item dengan lebih halus */
+        @keyframes slide-right {
+            from { transform: translateX(0) scale(0.95); }
+            to { transform: translateX(110px) scale(0.95); }
+        }
+
+        @keyframes slide-left {
+            from { transform: translateX(0) scale(0.95); }
+            to { transform: translateX(-110px) scale(0.95); }
+        }
+        
+        /* Animasi untuk efek drop sukses */
+        @keyframes drop-success {
+            0% { 
+                box-shadow: 0 0 5px rgba(99, 102, 241, 0.3); 
+                transform: scale(1);
+                filter: brightness(1);
+            }
+            20% { 
+                box-shadow: 0 0 35px rgba(99, 102, 241, 0.8), 0 0 20px rgba(255, 255, 255, 0.6) inset; 
+                transform: scale(1.07);
+                filter: brightness(1.3) contrast(1.1);
+            }
+            40% { 
+                box-shadow: 0 0 45px rgba(244, 63, 94, 0.7), 0 0 20px rgba(255, 255, 255, 0.5) inset; 
+                transform: scale(1.03);
+                filter: brightness(1.2) contrast(1.05);
+            }
+            60% { 
+                box-shadow: 0 0 40px rgba(99, 102, 241, 0.8), 0 0 15px rgba(255, 255, 255, 0.6) inset; 
+                transform: scale(1.05);
+                filter: brightness(1.25) contrast(1.08);
+            }
+            100% { 
+                box-shadow: 0 0 5px rgba(99, 102, 241, 0.3); 
+                transform: scale(1);
+                filter: brightness(1);
+            }
+        }
+
+        .image-item.dropped {
+            animation: drop-success 2s ease;
+            z-index: 50;
+            position: relative;
+        }
+        
+        /* Menambahkan efek pantulan untuk buat animasi drop terasa lebih hidup */
+        @keyframes subtle-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        /* Efek cahaya yang memancar setelah drop */
+        .image-item.dropped::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 0.75rem;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+            z-index: -1;
+            opacity: 0;
+            animation: glow-pulse 2s ease;
+        }
+        
+        @keyframes glow-pulse {
+            0% { opacity: 0; transform: scale(0.9); }
+            30% { opacity: 1; transform: scale(1.1); }
+            70% { opacity: 0.7; transform: scale(1.05); }
+            100% { opacity: 0; transform: scale(1.2); }
+        }
+        
+        .slide-right {
+            animation: slide-right 0.3s ease forwards;
+        }
+        
+        .slide-left {
+            animation: slide-left 0.3s ease forwards;
+        }
+
+        /* Gaya tambahan untuk drag-over state yang lebih jelas */
+        .image-item.drag-over-left {
+            box-shadow: -5px 0 15px rgba(99, 102, 241, 0.5);
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .image-item.drag-over-right {
+            box-shadow: 5px 0 15px rgba(99, 102, 241, 0.5);
+            border-right: 3px solid var(--primary-color);
+        }
+
+        /* Indikator posisi snap */
+        .snap-line {
+            position: absolute;
+            width: 4px;
+            height: 160px;
+            background-color: var(--accent-color);
+            z-index: 1000;
+            border-radius: 4px;
+            pointer-events: none;
+            box-shadow: 0 0 15px rgba(244, 63, 94, 0.6);
+        }
+
+        /* Aturan baru untuk memberikan jarak saat hover dalam mode drag */
+        /* Efek spread-out akan memberikan jarak lebih antara item-item saat drag */
+        .images-container.drag-active .image-item {
+            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), margin 0.3s ease;
+        }
+
+        /* // Memberikan jarak yang lebih lebar antar item saat item di-hover dalam mode drag */
+        .images-container.drag-active .image-item.hover-spread {
+            margin-left: 40px;  /* Jarak lebar yang mudah untuk drop */
+            margin-right: 40px;
+        }
+
+        /* // Membuat area drop zone lebih jelas dengan highlight warna */
+        .drop-zone-highlight {
+            position: absolute;
+            background-color: rgba(99, 102, 241, 0.15);
+            border-radius: 5px;
+            height: 140px;
+            z-index: 4;
+            pointer-events: none;
+            animation: pulse-zone 1.5s infinite alternate;
+        }
+
+        @keyframes pulse-zone {
+            0% { background-color: rgba(99, 102, 241, 0.1); }
+            100% { background-color: rgba(99, 102, 241, 0.25); }
+        }
+
+        /* // Menunjukkan area target yang aktif dengan efek panah */
+        .drop-arrow {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            box-shadow: 0 0 15px rgba(244, 63, 94, 0.6);
+            pointer-events: none;
+            animation: bounce 0.5s infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-5px); }
+        }
+
+        .images-container.drag-active {
+            background-color: rgba(15, 23, 42, 0.9);
+            box-shadow: inset 0 0 30px rgba(99, 102, 241, 0.2);
+        }
+
+        .image-item img {
+            display: block;
+            height: 140px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+        }
+
+        .image-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-item.dragging img {
+            transform: scale(0.95);
+        }
+
+        .image-item .filename {
+            position: absolute;
+            bottom: -32px;
+            color: #fff;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+            text-align: center;
+            background-color: rgba(99, 102, 241, 0.8);
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            z-index: 2;
+           
+        }
+
+        .image-item .filename-top {
+            position: absolute;
+            top: -25px;
+            left: 0;
+            width: 100%;
+            color: #fff;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            background-color: rgba(244, 63, 94, 0.8);
+            padding: 0.25rem 0;
+            border-radius: 0.5rem 0.5rem 0 0;
+            font-weight: 600;
+            z-index: 5;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+      
+        }
+
+        .image-item .filename-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            color: #fff;
+            font-size: 0.8rem;
+            background-color: rgba(15, 23, 42, 0.8);
+            padding: 0.5rem 0;
+            text-align: center;
+            transition: all 0.3s ease;
+         
+            border-radius: 0 0 0.5rem 0.5rem;
+        }
+
+        .image-item:hover .filename-overlay {
+            background-color: rgba(99, 102, 241, 0.8);
+        }
+
+        .image-item .filename:hover {
+            max-width: 300px;
+            z-index: 100;
+            white-space: normal;
+            background-color: var(--primary-color);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-item .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 10;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-item:hover .remove-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .image-item .remove-btn:hover {
+            background-color: var(--accent-hover);
+            transform: scale(1.1);
+            box-shadow: 0 3px 10px rgba(244, 63, 94, 0.3);
+        }
+
+        .result-area {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(8px);
+            background-image: linear-gradient(135deg, var(--glass-effect), transparent);
+        }
+
+        .result-area h3 {
+            margin-bottom: 1.25rem;
+            color: var(--text-color);
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        #sprite-dimensions {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+            background-color: rgba(15, 23, 42, 0.3);
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+        }
+
+        #sprite-result {
+            max-width: 100%;
+            border: 1px solid var(--border-color);
+            margin-top: 1rem;
+            border-radius: 0.75rem;
+            background-color: rgba(15, 23, 42, 0.7);
+            display: block;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2.5rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3.5rem;
+            margin-bottom: 1.25rem;
+            opacity: 0.6;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2.5rem;
+            padding: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(99, 102, 241, 0.3); }
+            100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.6); }
+        }
+
+        .glow {
+            animation: glow 2s infinite alternate;
+        }
+
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(15, 23, 42, 0.9);
+            color: white;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .header {
+                padding: 2rem 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2.25rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+            
+            .actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .drop-area {
+                padding: 2rem 1rem;
+            }
+        }
+
+        /* Loading animations */
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(99, 102, 241, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s infinite linear;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Reveal animations */
+        .fade-in {
+            animation: fade-in 0.5s ease-out;
+        }
+        
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Modal styles */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .modal-content {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            width: 500px;
+            border: 1px solid var(--border-color);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal-backdrop.active .modal-content {
+            transform: scale(1);
+        }
+
+        /* Konfirmasi pesan setelah drop sukses */
+        .drop-confirm-msg {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--success-color);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            opacity: 0;
+            animation: message-show 2s ease;
+            white-space: nowrap;
+            z-index: 100;
+        }
+        
+        .drop-confirm-msg i {
+            margin-right: 5px;
+        }
+        
+        @keyframes message-show {
+            0% { opacity: 0; transform: translate(-50%, 10px); }
+            15% { opacity: 1; transform: translate(-50%, 0); }
+            85% { opacity: 1; transform: translate(-50%, 0); }
+            100% { opacity: 0; transform: translate(-50%, -10px); }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container fade-in">
+        <div class="header">
+            <h1>Generator Sprite Sheet</h1>
+            <p>Gabungkan beberapa gambar menjadi satu sprite sheet dengan mudah. Cukup seret dan lepas gambar Anda!</p>
+        </div>
+
+        <div class="drop-area" id="drop-area">
+            <i class="fas fa-cloud-upload-alt pulse"></i>
+            <h3>Seret & Lepas Gambar di Sini</h3>
+            <p>atau</p>
+            <input type="file" id="file-input" class="file-input" accept="image/*" multiple>
+            <button class="btn" id="select-files">Pilih Gambar</button>
+        </div>
+
+        <div class="options">
+            <h3><i class="fas fa-cog"></i> Pengaturan</h3>
+            <div class="option-group">
+                <label for="gap">Jarak antar gambar (px):</label>
+                <input type="number" id="gap" value="0" min="0" max="100">
+            </div>
+            <div class="option-group">
+                <label for="background-color">Warna latar belakang:</label>
+                <input type="color" id="background-color" value="#242F40">
+            </div>
+            <div class="option-group">
+                <label for="arrange">Pengaturan gambar:</label>
+                <select id="arrange">
+                    <option value="horizontal">Horizontal (ke kanan)</option>
+                    <option value="vertical">Vertikal (ke bawah)</option>
+                    <option value="grid">Grid (sesuaikan baris)</option>
+                    <option value="custom">Ukuran Kustom</option>
+                </select>
+            </div>
+            <div class="option-group" id="grid-options" style="display: none;">
+                <label for="grid-columns">Jumlah kolom:</label>
+                <input type="number" id="grid-columns" value="4" min="1" max="20">
+            </div>
+            <div class="option-group" id="custom-size-options" style="display: none;">
+                <label for="custom-width">Ukuran Kustom (px):</label>
+                <div class="size-inputs">
+                    <input type="number" id="custom-width" placeholder="Lebar" value="888">
+                    <span class="size-separator">×</span>
+                    <input type="number" id="custom-height" placeholder="Tinggi" value="2672">
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="maintain-aspect" checked>
+                    <label for="maintain-aspect">Pertahankan resolusi asli</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="auto-scale" checked>
+                    <label for="auto-scale">Sesuaikan ukuran gambar jika diperlukan</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="force-dimensions" checked>
+                    <label for="force-dimensions">Paksa gunakan dimensi tepat seperti yang ditentukan</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="preview-area fade-in">
+            <h3><i class="fas fa-images"></i> Pratinjau Gambar <span id="image-count">(0 gambar)</span></h3>
+            <div class="images-container" id="images-container">
+                <div class="empty-state">
+                    <i class="fas fa-images"></i>
+                    <p>Tambahkan gambar untuk mulai membuat sprite sheet</p>
+                </div>
+            </div>
+            <div class="actions">
+                <button class="btn btn-accent" id="clear-all" disabled><i class="fas fa-trash-alt"></i> Hapus Semua</button>
+                <button class="btn" id="sort-by-name" disabled><i class="fas fa-sort-alpha-down"></i> Urutkan A-Z</button>
+                <button class="btn" id="generate-sprite" disabled><i class="fas fa-magic"></i> Buat Sprite Sheet</button>
+            </div>
+        </div>
+
+        <div class="result-area fade-in" style="display: none;" id="result-area">
+            <h3><i class="fas fa-check-circle"></i> Hasil Sprite Sheet</h3>
+            <div id="sprite-dimensions"><i class="fas fa-ruler-combined"></i> Dimensi: 0px × 0px</div>
+            <canvas id="sprite-result"></canvas>
+            <div class="actions">
+                <button class="btn" id="download-sprite"><i class="fas fa-download"></i> Unduh Sprite Sheet</button>
+                <button class="btn" id="download-json"><i class="fas fa-file-code"></i> Unduh Data JSON</button>
+            </div>
+        </div>
+        <footer>
+            <p>© 2025 Lada Hitam Creation | Generator Sprite Sheet | All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const dropArea = document.getElementById('drop-area');
+            const fileInput = document.getElementById('file-input');
+            const selectFilesBtn = document.getElementById('select-files');
+            const imagesContainer = document.getElementById('images-container');
+            const imageCountSpan = document.getElementById('image-count');
+            const clearAllBtn = document.getElementById('clear-all');
+            const sortByNameBtn = document.getElementById('sort-by-name');
+            const generateSpriteBtn = document.getElementById('generate-sprite');
+            const resultArea = document.getElementById('result-area');
+            const spriteResult = document.getElementById('sprite-result');
+            const downloadSpriteBtn = document.getElementById('download-sprite');
+            const downloadJsonBtn = document.getElementById('download-json');
+            const spriteDimensions = document.getElementById('sprite-dimensions');
+            const gapInput = document.getElementById('gap');
+            const bgColorInput = document.getElementById('background-color');
+            const arrangeSelect = document.getElementById('arrange');
+            const gridOptions = document.getElementById('grid-options');
+            const gridColumnsInput = document.getElementById('grid-columns');
+            const customSizeOptions = document.getElementById('custom-size-options');
+            const customWidthInput = document.getElementById('custom-width');
+            const customHeightInput = document.getElementById('custom-height');
+            const maintainAspectCheck = document.getElementById('maintain-aspect');
+            const autoScaleCheck = document.getElementById('auto-scale');
+            const forceDimensionsCheck = document.getElementById('force-dimensions');
+            
+            // Variables
+            let images = [];
+            let isDragging = false;
+            let draggedItem = null;
+            let draggedIndex = null;
+            
+            // Event listeners for drag and drop
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            dropArea.addEventListener('drop', handleDrop, false);
+            selectFilesBtn.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', handleFiles);
+            clearAllBtn.addEventListener('click', clearAllImages);
+            sortByNameBtn.addEventListener('click', sortImagesByName);
+            generateSpriteBtn.addEventListener('click', generateSpriteSheet);
+            downloadSpriteBtn.addEventListener('click', downloadSpriteSheet);
+            downloadJsonBtn.addEventListener('click', downloadJsonData);
+            
+            arrangeSelect.addEventListener('change', function() {
+                // Hide all optional settings first
+                gridOptions.style.display = 'none';
+                customSizeOptions.style.display = 'none';
+                
+                // Show relevant settings based on selection
+                if (this.value === 'grid') {
+                    gridOptions.style.display = 'block';
+                } else if (this.value === 'custom') {
+                    customSizeOptions.style.display = 'block';
+                }
+                
+                if (images.length > 0) {
+                    generateSpriteSheet();
+                }
+            });
+            
+            [gapInput, bgColorInput, gridColumnsInput, customWidthInput, customHeightInput, 
+             maintainAspectCheck, autoScaleCheck, forceDimensionsCheck].forEach(input => {
+                input.addEventListener('change', function() {
+                    if (images.length > 0) {
+                        generateSpriteSheet();
+                    }
+                });
+            });
+            
+            // Functions
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            function highlight() {
+                dropArea.classList.add('highlight');
+            }
+            
+            function unhighlight() {
+                dropArea.classList.remove('highlight');
+            }
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles({ target: { files } });
+                
+                // Tambahkan animasi highlight pada preview area
+                const previewArea = document.querySelector('.preview-area');
+                previewArea.style.transition = 'box-shadow 0.3s ease';
+                previewArea.style.boxShadow = '0 0 20px var(--primary-color)';
+                
+                // Hapus highlight setelah beberapa detik
+                setTimeout(() => {
+                    previewArea.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.05)';
+                }, 2000);
+            }
+            
+            function handleFiles(e) {
+                const files = Array.from(e.target.files);
+                
+                // Filter only image files
+                const imageFiles = files.filter(file => file.type.startsWith('image/'));
+                
+                if (imageFiles.length === 0) {
+                    alert('Mohon pilih hanya file gambar (JPG, PNG, GIF, dll).');
+                    return;
+                }
+                
+                // Process each image file
+                const promises = imageFiles.map(file => {
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            const img = new Image();
+                            img.onload = function() {
+                                resolve({
+                                    file: file,
+                                    element: img,
+                                    width: img.naturalWidth,
+                                    height: img.naturalHeight,
+                                    src: event.target.result,
+                                    name: file.name
+                                });
+                            };
+                            img.onerror = reject;
+                            img.src = event.target.result;
+                        };
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
+                    });
+                });
+                
+                Promise.all(promises)
+                    .then(newImages => {
+                        images = [...images, ...newImages];
+                        updateImagesUI();
+                        setupDragAndDrop();
+                        updateButtonStates();
+                        
+                        // Scroll ke area preview setelah gambar ditambahkan
+                        document.querySelector('.preview-area').scrollIntoView({ behavior: 'smooth' });
+                    })
+                    .catch(error => {
+                        console.error('Error loading images:', error);
+                        alert('Terjadi kesalahan saat memuat gambar.');
+                    });
+                
+                // Reset file input
+                fileInput.value = '';
+            }
+            
+            function updateImagesUI() {
+                // Remove empty state if there are images
+                if (images.length > 0) {
+                    imagesContainer.innerHTML = '';
+                } else {
+                    imagesContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-images"></i>
+                            <p>Tambahkan gambar untuk mulai membuat sprite sheet</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Add each image to the container
+                images.forEach((img, index) => {
+                    const imageItem = document.createElement('div');
+                    imageItem.className = 'image-item';
+                    imageItem.draggable = true;
+                    imageItem.dataset.index = index;
+                    
+                    const image = document.createElement('img');
+                    image.src = img.src;
+                    image.alt = img.name;
+                    image.title = `${img.name} (${img.width}x${img.height})`;
+                    
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'remove-btn';
+                    removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                    removeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        removeImage(index);
+                    });
+                    
+                    // Tambahkan label nama file di atas gambar
+                    const filenameTop = document.createElement('div');
+                    filenameTop.className = 'filename-top';
+                    filenameTop.textContent = `#${index + 1}`;
+                    filenameTop.title = img.name;
+                    
+                    // Tambahkan nama file di dalam gambar sebagai overlay
+                    const filenameOverlay = document.createElement('div');
+                    filenameOverlay.className = 'filename-overlay';
+                    filenameOverlay.textContent = img.name;
+                    filenameOverlay.title = img.name;
+                    
+                    // Tambahkan nama file di bawah gambar dengan format lebih jelas
+                    const filename = document.createElement('div');
+                    filename.className = 'filename';
+                    
+                    // Tambahkan nomor urut di depan nama file
+                    filename.textContent = `${index + 1}. ${img.name}`;
+                    filename.title = img.name; // Tambahkan tooltip untuk nama panjang
+                    
+                    imageItem.appendChild(filenameTop);
+                    imageItem.appendChild(image);
+                    imageItem.appendChild(filenameOverlay);
+                    imageItem.appendChild(removeBtn);
+                    imageItem.appendChild(filename);
+                    imagesContainer.appendChild(imageItem);
+                });
+                
+                // Update image count
+                imageCountSpan.textContent = `(${images.length} gambar)`;
+            }
+            
+            function setupDragAndDrop() {
+                const imageItems = document.querySelectorAll('.image-item');
+                
+                // Hapus placeholder lama jika ada
+                const oldPlaceholder = document.querySelector('.drop-placeholder');
+                if (oldPlaceholder) oldPlaceholder.remove();
+                
+                // Hapus drop zone highlight lama jika ada
+                removeDropZoneElements();
+                
+                // Buat placeholder untuk efek drop
+                const placeholder = document.createElement('div');
+                placeholder.className = 'drop-placeholder';
+                imagesContainer.appendChild(placeholder);
+                
+                // Buat snap line indicator untuk posisi drop yang tepat
+                const snapLine = document.createElement('div');
+                snapLine.className = 'snap-line';
+                snapLine.style.display = 'none';
+                imagesContainer.appendChild(snapLine);
+                
+                imageItems.forEach(item => {
+                    item.addEventListener('dragstart', handleDragStart);
+                    item.addEventListener('dragend', handleDragEnd);
+                    item.addEventListener('dragover', handleItemDragOver);
+                    item.addEventListener('dragleave', handleItemDragLeave);
+                    item.addEventListener('drop', handleItemDrop);
+                });
+                
+                imagesContainer.addEventListener('dragover', handleContainerDragOver);
+                imagesContainer.addEventListener('drop', handleContainerDrop);
+            }
+            
+            // // Menghapus semua elemen bantuan drop zone
+            function removeDropZoneElements() {
+                // Hapus drop zone highlight lama jika ada
+                const oldHighlights = document.querySelectorAll('.drop-zone-highlight');
+                oldHighlights.forEach(el => el.remove());
+                
+                // Hapus drop arrow jika ada
+                const oldArrows = document.querySelectorAll('.drop-arrow');
+                oldArrows.forEach(el => el.remove());
+            }
+            
+            function handleDragStart(e) {
+                // Hapus kelas drag-over dari semua item
+                clearDragOverStates();
+                
+                // Hapus elemen bantuan drop zone
+                removeDropZoneElements();
+                
+                draggedItem = this;
+                draggedIndex = parseInt(this.dataset.index);
+                
+                // Set drag data
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', this.innerHTML);
+                
+                // Hapus indikator snap jika ada
+                const snapLine = document.querySelector('.snap-line');
+                if (snapLine) snapLine.style.display = 'none';
+                
+                // Ambil dan simpan dimensi item untuk placeholder
+                const placeholder = document.querySelector('.drop-placeholder');
+                const rect = this.getBoundingClientRect();
+                placeholder.style.width = `${rect.width}px`;
+                placeholder.style.height = `${rect.height - 25}px`; // Kurangi margin bawah
+                
+                // Tambahkan class dragging dengan sedikit delay
+                setTimeout(() => {
+                    this.classList.add('dragging');
+                    imagesContainer.classList.add('drag-active');
+                    
+                    // Tambahkan placeholder di posisi item yang di-drag
+                    const containerRect = imagesContainer.getBoundingClientRect();
+                    placeholder.style.display = 'block';
+                    placeholder.style.left = `${rect.left - containerRect.left}px`;
+                    placeholder.style.top = `${rect.top - containerRect.top}px`;
+                }, 0);
+                
+                // Sembunyikan gambar-gambar lain sedikit, gunakan transisi yang lebih halus
+                document.querySelectorAll('.image-item:not(.dragging)').forEach(item => {
+                    item.style.opacity = '0.8';
+                    item.style.transform = 'scale(0.95)';
+                    item.style.transition = 'opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease, margin 0.3s ease';
+                });
+                
+                // Set data untuk placeholder
+                const img = images[draggedIndex];
+                if (img) {
+                    placeholder.dataset.width = img.width;
+                    placeholder.dataset.height = img.height;
+                }
+            }
+            
+            function handleDragEnd(e) {
+                this.classList.remove('dragging');
+                imagesContainer.classList.remove('drag-active');
+                
+                // Hapus kelas slide dan hover-spread dari semua item
+                document.querySelectorAll('.image-item').forEach(item => {
+                    item.classList.remove('slide-right', 'slide-left', 'hover-spread');
+                    item.style.marginLeft = '';
+                    item.style.marginRight = '';
+                });
+                
+                // Hapus kelas drag-over dari semua item
+                clearDragOverStates();
+                
+                // Sembunyikan placeholder
+                const placeholder = document.querySelector('.drop-placeholder');
+                if (placeholder) placeholder.style.display = 'none';
+                
+                // Hapus snap line
+                const snapLine = document.querySelector('.snap-line');
+                if (snapLine) snapLine.style.display = 'none';
+                
+                // Hapus semua indikator drop yang mungkin ada
+                const indicators = document.querySelectorAll('.drop-indicator');
+                indicators.forEach(indicator => indicator.remove());
+                
+                // Hapus drop zone elements
+                removeDropZoneElements();
+                
+                // Kembalikan opacity dan transform gambar-gambar lain
+                document.querySelectorAll('.image-item').forEach(item => {
+                    item.style.opacity = '1';
+                    item.style.transform = '';
+                    item.style.boxShadow = '';
+                    item.style.borderLeft = '';
+                    item.style.borderRight = '';
+                });
+                
+                draggedItem = null;
+                draggedIndex = null;
+            }
+            
+            function clearDragOverStates() {
+                // Hapus semua kelas drag-over
+                document.querySelectorAll('.image-item').forEach(item => {
+                    item.classList.remove('drag-over-left', 'drag-over-right');
+                });
+            }
+            
+            // // Fungsi untuk menangani drag over pada item gambar (bagian krusial)
+            function handleItemDragOver(e) {
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
+                e.dataTransfer.dropEffect = 'move';
+                
+                // Hapus semua indikator sebelumnya
+                const oldIndicators = document.querySelectorAll('.drop-indicator');
+                oldIndicators.forEach(indicator => indicator.remove());
+                
+                // Hapus kelas drag-over dari semua item dan tambahkan hanya ke item ini
+                clearDragOverStates();
+                
+                if (draggedItem !== this) {
+                    const rect = this.getBoundingClientRect();
+                    const containerRect = imagesContainer.getBoundingClientRect();
+                    const mouseX = e.clientX;
+                    const itemMiddle = rect.left + rect.width / 2;
+                    
+                    // // PENTING: Menghapus semua margin dan kelas hover dari item-item sebelumnya
+                    document.querySelectorAll('.image-item').forEach(item => {
+                        if (item !== this && item !== draggedItem) {
+                            item.classList.remove('hover-spread');
+                        }
+                    });
+                    
+                    // // PENTING: Tambahkan kelas hover-spread pada item ini untuk membuat jarak
+                    this.classList.add('hover-spread');
+                    
+                    // Tentukan di sisi mana kursor berada
+                    if (mouseX < itemMiddle) {
+                        this.classList.add('drag-over-left');
+                        
+                        // // PENTING: Buat drop zone highlight di sebelah kiri item
+                        createDropZoneHighlight(rect.left - 40, rect.top, 40, rect.height, containerRect, 'left');
+                    } else {
+                        this.classList.add('drag-over-right');
+                        
+                        // // PENTING: Buat drop zone highlight di sebelah kanan item
+                        createDropZoneHighlight(rect.right, rect.top, 40, rect.height, containerRect, 'right');
+                    }
+                    
+                    // Update placeholder position dengan transisi halus
+                    const placeholder = document.querySelector('.drop-placeholder');
+                    if (placeholder) {
+                        const width = parseFloat(placeholder.style.width);
+                        placeholder.style.transition = 'left 0.2s ease, top 0.1s ease';
+                        
+                        if (mouseX < itemMiddle) {
+                            // Kursor di sebelah kiri item
+                            placeholder.style.left = `${rect.left - containerRect.left - width/2}px`;
+                            placeholder.style.top = `${rect.top - containerRect.top}px`;
+                        } else {
+                            // Kursor di sebelah kanan item
+                            placeholder.style.left = `${rect.right - containerRect.left - width/2}px`;
+                            placeholder.style.top = `${rect.top - containerRect.top}px`;
+                        }
+                    }
+                    
+                    // Update snap line untuk indikator posisi yang lebih jelas
+                    const snapLine = document.querySelector('.snap-line');
+                    if (snapLine) {
+                        snapLine.style.display = 'block';
+                        snapLine.style.transition = 'left 0.15s ease, top 0.1s ease';
+                        
+                        if (mouseX < itemMiddle) {
+                            // Posisi di sebelah kiri item
+                            snapLine.style.left = `${rect.left - containerRect.left}px`;
+                        } else {
+                            // Posisi di sebelah kanan item
+                            snapLine.style.left = `${rect.right - containerRect.left}px`;
+                        }
+                        snapLine.style.top = `${rect.top - containerRect.top - 10}px`;
+                    }
+                }
+                
+                return false;
+            }
+            
+            // // PENTING: Fungsi untuk membuat visual drop zone yang jelas
+            function createDropZoneHighlight(x, y, width, height, containerRect, position) {
+                // Hapus highlight sebelumnya
+                removeDropZoneElements();
+                
+                // Buat drop zone highlight
+                const highlight = document.createElement('div');
+                highlight.className = 'drop-zone-highlight';
+                highlight.style.width = `${width}px`;
+                highlight.style.height = `${height}px`;
+                highlight.style.left = `${x - containerRect.left}px`;
+                highlight.style.top = `${y - containerRect.top}px`;
+                imagesContainer.appendChild(highlight);
+                
+                // Buat drop arrow yang menunjuk ke drop zone
+                const arrow = document.createElement('div');
+                arrow.className = 'drop-arrow';
+                arrow.innerHTML = position === 'left' ? '←' : '→';
+                
+                // Posisikan drop arrow sesuai arah
+                if (position === 'left') {
+                    arrow.style.left = `${x - containerRect.left + 5}px`;
+                } else {
+                    arrow.style.left = `${x - containerRect.left - 35}px`;
+                }
+                arrow.style.top = `${y - containerRect.top + height/2 - 15}px`;
+                imagesContainer.appendChild(arrow);
+            }
+            
+            function handleItemDragLeave(e) {
+                // Hapus kelas drag-over saat mouse keluar dari item
+                this.classList.remove('drag-over-left', 'drag-over-right');
+                
+                // // PENTING: Hapus margin saat mouse keluar dari item
+                // Namun tunggu sedikit untuk mencegah flickering
+                setTimeout(() => {
+                    // Jika masih tidak ada item lain yang hover, baru hapus kelas hover-spread
+                    if (!e.relatedTarget || !e.relatedTarget.classList.contains('image-item')) {
+                        this.classList.remove('hover-spread');
+                    }
+                }, 50); // Delay singkat untuk menghindari flicker
+            }
+            
+            function handleContainerDragOver(e) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                
+                if (!draggedItem) return false;
+                
+                // Get container rect
+                const containerRect = imagesContainer.getBoundingClientRect();
+                const mouseX = e.clientX - containerRect.left;
+                const mouseY = e.clientY - containerRect.top;
+                
+                // // Jika drag over pada container (bukan pada item), hapus semua hover-spread
+                if (!e.target.classList.contains('image-item')) {
+                    document.querySelectorAll('.image-item').forEach(item => {
+                        if (item !== draggedItem) {
+                            item.classList.remove('hover-spread');
+                        }
+                    });
+                }
+                
+                // Update placeholder pada posisi kursor di container dengan transisi halus
+                if (!e.target.classList.contains('image-item')) {
+                    const placeholder = document.querySelector('.drop-placeholder');
+                    if (placeholder) {
+                        const width = parseFloat(placeholder.style.width);
+                        placeholder.style.transition = 'left 0.2s ease, top 0.1s ease';
+                        
+                        // Tempatkan placeholder di posisi kursor atau di akhir container
+                        const items = document.querySelectorAll('.image-item');
+                        const lastItem = items[items.length - 1];
+                        
+                        // Update snap line juga
+                        const snapLine = document.querySelector('.snap-line');
+                        if (snapLine) {
+                            snapLine.style.display = 'block';
+                            snapLine.style.transition = 'left 0.15s ease, top 0.1s ease';
+                        }
+                        
+                        // Hapus drop zone elements karena kita berada di atas container
+                        removeDropZoneElements();
+                        
+                        if (lastItem) {
+                            const lastRect = lastItem.getBoundingClientRect();
+                            if (e.clientX > lastRect.right) {
+                                // Posisi di akhir container - buat drop zone di posisi ini
+                                createDropZoneHighlight(lastRect.right, lastRect.top, 40, lastRect.height, containerRect, 'right');
+                                
+                                // Posisi di akhir container
+                                placeholder.style.left = `${lastRect.right - containerRect.left + 10}px`;
+                                placeholder.style.top = `${lastRect.top - containerRect.top}px`;
+                                
+                                if (snapLine) {
+                                    snapLine.style.left = `${lastRect.right - containerRect.left + 4}px`;
+                                    snapLine.style.top = `${lastRect.top - containerRect.top - 10}px`;
+                                }
+                            } else {
+                                // Posisi di kursor - buat drop zone di posisi kursor
+                                createDropZoneHighlight(e.clientX - 20, containerRect.top + 20, 40, 140, containerRect, 'left');
+                                
+                                // Posisi di kursor
+                                placeholder.style.left = `${mouseX - width/2}px`;
+                                placeholder.style.top = `${10}px`; // Fixed top position
+                                
+                                if (snapLine) {
+                                    snapLine.style.left = `${mouseX}px`;
+                                    snapLine.style.top = '0px';
+                                }
+                            }
+                        } else {
+                            // Tidak ada item, tempatkan di awal - buat drop zone di awal
+                            createDropZoneHighlight(containerRect.left + 10, containerRect.top + 20, 40, 140, containerRect, 'right');
+                            
+                            // Tidak ada item, tempatkan di awal
+                            placeholder.style.left = `${10}px`;
+                            placeholder.style.top = `${10}px`;
+                            
+                            if (snapLine) {
+                                snapLine.style.left = '10px';
+                                snapLine.style.top = '0px';
+                            }
+                        }
+                    }
+                }
+                
+                return false;
+            }
+            
+            function handleItemDrop(e) {
+                e.stopPropagation();
+                
+                // Hapus semua indikator drop dan reset transformations
+                document.querySelectorAll('.image-item').forEach(item => {
+                    item.style.borderColor = 'transparent';
+                    item.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.2)';
+                    item.style.transform = '';
+                    item.classList.remove('slide-right', 'slide-left', 'drag-over-left', 'drag-over-right', 'hover-spread');
+                    item.style.marginLeft = '';
+                    item.style.marginRight = '';
+                });
+                
+                // Hapus drop zone elements
+                removeDropZoneElements();
+                
+                if (draggedItem !== this) {
+                    const targetIndex = parseInt(this.dataset.index);
+                    const rect = this.getBoundingClientRect();
+                    const mouseX = e.clientX;
+                    const itemMiddle = rect.left + rect.width / 2;
+                    
+                    // Tentukan posisi drop berdasarkan posisi kursor dengan lebih presisi
+                    let newIndex = targetIndex;
+                    if (mouseX >= itemMiddle) {
+                        // Drop di sebelah kanan
+                        newIndex = targetIndex + 1;
+                        if (draggedIndex < targetIndex) newIndex--;
+                    }
+                    
+                    // Berikan umpan balik visual
+                    const targetItem = this;
+                    targetItem.classList.add('glow');
+                    setTimeout(() => {
+                        targetItem.classList.remove('glow');
+                    }, 800);
+                    
+                    // Animasi flash pada placeholder dengan efek yang lebih kuat
+                    const placeholder = document.querySelector('.drop-placeholder');
+                    if (placeholder) {
+                        placeholder.style.boxShadow = '0 0 30px var(--primary-color)';
+                        setTimeout(() => {
+                            placeholder.style.boxShadow = '';
+                            placeholder.style.display = 'none';
+                        }, 300);
+                    }
+                    
+                    // Selesaikan reordering
+                    reorderImages(draggedIndex, newIndex);
+                }
+                
+                return false;
+            }
+            
+            function handleContainerDrop(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Hapus transformasi dan margin
+                document.querySelectorAll('.image-item').forEach(item => {
+                    item.style.transform = '';
+                    item.classList.remove('slide-right', 'slide-left', 'drag-over-left', 'drag-over-right', 'hover-spread');
+                    item.style.marginLeft = '';
+                    item.style.marginRight = '';
+                });
+                
+                // Hapus drop zone elements
+                removeDropZoneElements();
+                
+                // Handle if dropped outside of an item, at the end
+                if (draggedItem && !e.target.classList.contains('image-item')) {
+                    // Animasi flash pada placeholder dengan efek yang lebih kuat
+                    const placeholder = document.querySelector('.drop-placeholder');
+                    if (placeholder) {
+                        placeholder.style.boxShadow = '0 0 30px var(--primary-color)';
+                        placeholder.style.backgroundColor = 'rgba(99, 102, 241, 0.25)';
+                        setTimeout(() => {
+                            placeholder.style.boxShadow = '';
+                            placeholder.style.backgroundColor = '';
+                            placeholder.style.display = 'none';
+                        }, 300);
+                    }
+                    
+                    reorderImages(draggedIndex, images.length - 1);
+                }
+                
+                return false;
+            }
+            
+            function reorderImages(fromIndex, toIndex) {
+                // Jangan lakukan apa-apa jika indeks sama
+                if (fromIndex === toIndex) return;
+                
+                // Reorder images array dengan lebih handal
+                try {
+                    const movedImage = images.splice(fromIndex, 1)[0];
+                    images.splice(toIndex, 0, movedImage);
+                    
+                    // Animasikan perubahan
+                    const container = document.querySelector('.images-container');
+                    container.classList.add('glow');
+                    setTimeout(() => {
+                        container.classList.remove('glow');
+                    }, 500);
+                    
+                    // Update UI
+                    updateImagesUI();
+                    setupDragAndDrop();
+                    
+                    // Tambahkan efek bersinar ke item yang baru saja dipindahkan
+                    const newItems = document.querySelectorAll('.image-item');
+                    if (newItems[toIndex]) {
+                        // Terapkan kelas dropped untuk animasi bersinar
+                        newItems[toIndex].classList.add('dropped');
+                        
+                        // Tambahkan pesan konfirmasi kecil 
+                        const confirmMsg = document.createElement('div');
+                        confirmMsg.classList.add('drop-confirm-msg');
+                        confirmMsg.innerHTML = '<i class="fas fa-check-circle"></i> Pindah!';
+                        newItems[toIndex].appendChild(confirmMsg);
+                        
+                        // Hapus kelas dan pesan setelah animasi selesai
+                        setTimeout(() => {
+                            newItems[toIndex].classList.remove('dropped');
+                            if (confirmMsg && confirmMsg.parentNode) {
+                                confirmMsg.parentNode.removeChild(confirmMsg);
+                            }
+                        }, 2000);
+                    }
+                    
+                    // Regenerate sprite sheet if already showing
+                    if (resultArea.style.display !== 'none') {
+                        generateSpriteSheet();
+                    }
+                } catch (err) {
+                    console.error('Error reordering images:', err);
+                }
+            }
+            
+            function removeImage(index) {
+                images.splice(index, 1);
+                updateImagesUI();
+                setupDragAndDrop();
+                updateButtonStates();
+                
+                // Regenerate sprite sheet if already showing and there are still images
+                if (resultArea.style.display !== 'none' && images.length > 0) {
+                    generateSpriteSheet();
+                } else if (images.length === 0) {
+                    resultArea.style.display = 'none';
+                }
+            }
+            
+            function clearAllImages() {
+                images = [];
+                updateImagesUI();
+                updateButtonStates();
+                resultArea.style.display = 'none';
+            }
+            
+            function updateButtonStates() {
+                if (images.length > 0) {
+                    clearAllBtn.disabled = false;
+                    clearAllBtn.classList.remove('btn-disabled');
+                    sortByNameBtn.disabled = false;
+                    sortByNameBtn.classList.remove('btn-disabled');
+                    generateSpriteBtn.disabled = false;
+                    generateSpriteBtn.classList.remove('btn-disabled');
+                } else {
+                    clearAllBtn.disabled = true;
+                    clearAllBtn.classList.add('btn-disabled');
+                    sortByNameBtn.disabled = true;
+                    sortByNameBtn.classList.add('btn-disabled');
+                    generateSpriteBtn.disabled = true;
+                    generateSpriteBtn.classList.add('btn-disabled');
+                }
+            }
+            
+            function generateSpriteSheet() {
+                if (images.length === 0) return;
+                
+                const gap = parseInt(gapInput.value) || 0;
+                const backgroundColor = bgColorInput.value;
+                const arrangement = arrangeSelect.value;
+                const gridColumns = parseInt(gridColumnsInput.value) || 4;
+                const customWidth = parseInt(customWidthInput.value) || 888;
+                const customHeight = parseInt(customHeightInput.value) || 2672;
+                const maintainAspect = maintainAspectCheck.checked;
+                const autoScale = autoScaleCheck.checked;
+                const forceDimensions = forceDimensionsCheck.checked;
+                
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                let totalWidth = 0;
+                let totalHeight = 0;
+                let maxWidth = 0;
+                let maxHeight = 0;
+                let positions = [];
+                
+                // Calculate dimensions based on arrangement
+                if (arrangement === 'horizontal' || arrangement === 'custom') {
+                    // Untuk mode horizontal atau kustom, susun semua gambar dalam satu baris
+                    // Hitung total width dan max height
+                    totalWidth = images.reduce((sum, img) => sum + img.width, 0) + (gap * (images.length - 1));
+                    maxHeight = Math.max(...images.map(img => img.height));
+                    
+                    // Jika mode custom dan force dimensions aktif, gunakan height yang ditentukan
+                    if (arrangement === 'custom' && forceDimensions) {
+                        totalWidth = Math.max(totalWidth, customWidth);
+                        totalHeight = customHeight;
+                    } else {
+                        totalHeight = maxHeight;
+                    }
+                    
+                    // Calculate positions - selalu horizontal dari kiri ke kanan
+                    let xOffset = 0;
+                    images.forEach(img => {
+                        // Posisikan gambar di tengah secara vertikal jika perlu
+                        const yPos = Math.floor((totalHeight - img.height) / 2);
+                        
+                        positions.push({
+                            x: xOffset,
+                            y: yPos,
+                            width: img.width,
+                            height: img.height,
+                            originalWidth: img.width,
+                            originalHeight: img.height,
+                            scale: 1
+                        });
+                        xOffset += img.width + gap;
+                    });
+                    
+                } else if (arrangement === 'vertical') {
+                    // All images in a column
+                    totalHeight = images.reduce((sum, img) => sum + img.height, 0) + (gap * (images.length - 1));
+                    maxWidth = Math.max(...images.map(img => img.width));
+                    totalWidth = maxWidth;
+                    
+                    // Calculate positions
+                    let yOffset = 0;
+                    images.forEach(img => {
+                        positions.push({
+                            x: Math.floor((totalWidth - img.width) / 2), // Center horizontally
+                            y: yOffset,
+                            width: img.width,
+                            height: img.height,
+                            originalWidth: img.width,
+                            originalHeight: img.height,
+                            scale: 1
+                        });
+                        yOffset += img.height + gap;
+                    });
+                    
+                } else if (arrangement === 'grid') {
+                    // Images in a grid with specified columns
+                    const rows = Math.ceil(images.length / gridColumns);
+                    
+                    // Calculate max width and height for grid cells
+                    const cellWidths = [];
+                    const cellHeights = [];
+                    
+                    // Calculate the maximum size for each column and row
+                    for (let i = 0; i < gridColumns; i++) {
+                        cellWidths[i] = 0;
+                    }
+                    
+                    for (let i = 0; i < rows; i++) {
+                        cellHeights[i] = 0;
+                    }
+                    
+                    images.forEach((img, index) => {
+                        const col = index % gridColumns;
+                        const row = Math.floor(index / gridColumns);
+                        
+                        cellWidths[col] = Math.max(cellWidths[col], img.width);
+                        cellHeights[row] = Math.max(cellHeights[row], img.height);
+                    });
+                    
+                    // Calculate total width and height
+                    totalWidth = cellWidths.reduce((sum, width) => sum + width, 0) + (gap * (gridColumns - 1));
+                    totalHeight = cellHeights.reduce((sum, height) => sum + height, 0) + (gap * (rows - 1));
+                    
+                    // Calculate positions
+                    images.forEach((img, index) => {
+                        const col = index % gridColumns;
+                        const row = Math.floor(index / gridColumns);
+                        
+                        let xOffset = 0;
+                        for (let i = 0; i < col; i++) {
+                            xOffset += cellWidths[i] + gap;
+                        }
+                        
+                        let yOffset = 0;
+                        for (let i = 0; i < row; i++) {
+                            yOffset += cellHeights[i] + gap;
+                        }
+                        
+                        positions.push({
+                            x: xOffset,
+                            y: yOffset,
+                            width: img.width,
+                            height: img.height,
+                            originalWidth: img.width,
+                            originalHeight: img.height,
+                            scale: 1
+                        });
+                    });
+                }
+                
+                // Set canvas size - pastikan ukuran canvas cukup besar
+                canvas.width = totalWidth;
+                canvas.height = totalHeight;
+                
+                // Fill background - ini hanya untuk preview
+                ctx.fillStyle = backgroundColor;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw images on canvas - pastikan semua gambar digambar
+                images.forEach((img, index) => {
+                    const pos = positions[index];
+                    if (img.element && img.element.complete) {
+                        try {
+                            ctx.drawImage(img.element, pos.x, pos.y, pos.width, pos.height);
+                        } catch (e) {
+                            console.error("Error drawing image: ", e);
+                        }
+                    }
+                });
+                
+                // Display the result
+                spriteResult.width = canvas.width;
+                spriteResult.height = canvas.height;
+                const resultCtx = spriteResult.getContext('2d');
+                resultCtx.fillStyle = backgroundColor;
+                resultCtx.fillRect(0, 0, canvas.width, canvas.height);
+                resultCtx.drawImage(canvas, 0, 0);
+                
+                // Update sprite dimensions display
+                spriteDimensions.textContent = `Dimensi: ${canvas.width}px × ${canvas.height}px`;
+                
+                // Show result area
+                resultArea.style.display = 'block';
+                
+                // Scroll to result area
+                resultArea.scrollIntoView({ behavior: 'smooth' });
+                
+                // Save positions for JSON export
+                images.forEach((img, index) => {
+                    img.position = positions[index];
+                });
+                
+                // Debug - log jumlah gambar dan dimensi
+                console.log(`Generated sprite sheet with ${images.length} images, size: ${totalWidth}x${totalHeight}`);
+            }
+            
+            function downloadSpriteSheet() {
+                try {
+                    const canvas = document.getElementById('sprite-result');
+                    
+                    // Check if the canvas is valid
+                    if (!canvas || canvas.width === 0 || canvas.height === 0) {
+                        alert('Tidak dapat mengunduh sprite sheet. Canvas tidak valid.');
+                        return;
+                    }
+                    
+                    console.log(`Downloading sprite sheet: ${canvas.width}x${canvas.height} with ${images.length} frames`);
+                    
+                    // Buat canvas baru dengan ukuran yang tepat untuk memastikan semua gambar terlihat
+                    const tempCanvas = document.createElement('canvas');
+                    
+                    // Dapatkan ukuran yang sebenarnya dari semua gambar + gap
+                    const totalWidth = images.reduce((sum, img) => sum + img.width, 0) + 
+                                    ((parseInt(gapInput.value) || 0) * (images.length - 1));
+                    const maxHeight = Math.max(...images.map(img => img.height));
+                    
+                    tempCanvas.width = totalWidth;
+                    tempCanvas.height = maxHeight;
+                    const tempCtx = tempCanvas.getContext('2d');
+                    
+                    // PENTING: JANGAN ISI BACKGROUND - biarkan transparan untuk PNG
+                    // Hapus baris berikut untuk mendapatkan PNG transparan:
+                    // tempCtx.fillStyle = bgColorInput.value;
+                    // tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+                    
+                    // CLEAR canvas dengan alpha=0 (transparansi penuh)
+                    tempCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+                    
+                    // Draw all images manually di canvas baru untuk memastikan semua terlihat
+                    let xOffset = 0;
+                    const gap = parseInt(gapInput.value) || 0;
+                    
+                    images.forEach((img) => {
+                        if (img.element && img.element.complete) {
+                            try {
+                                // Posisikan gambar di tengah secara vertikal
+                                const yPos = Math.floor((maxHeight - img.height) / 2);
+                                
+                                // Gambar di posisi yang benar
+                                tempCtx.drawImage(img.element, xOffset, yPos, img.width, img.height);
+                                xOffset += img.width + gap;
+                            } catch (e) {
+                                console.error("Error drawing image during download: ", e);
+                            }
+                        }
+                    });
+                    
+                    // Gunakan canvas baru untuk download dengan pengaturan untuk PNG transparan
+                    const dataURL = tempCanvas.toDataURL('image/png');
+                    
+                    // Verify the data URL is valid
+                    if (!dataURL || dataURL === 'data:,' || dataURL.length < 100) {
+                        alert('Tidak dapat membuat gambar. Silakan coba lagi.');
+                        console.error("Invalid data URL", dataURL);
+                        return;
+                    }
+                    
+                    // Log panjang URL data untuk debugging
+                    console.log(`Data URL length: ${dataURL.length}`);
+                    
+                    const link = document.createElement('a');
+                    link.download = 'sprite-sheet.png';
+                    link.href = dataURL;
+                    link.click();
+                    
+                    console.log("Download initiated successfully");
+                } catch (e) {
+                    console.error("Error downloading sprite sheet: ", e);
+                    alert("Terjadi kesalahan saat mengunduh sprite sheet: " + e.message);
+                }
+            }
+            
+            function downloadJsonData() {
+                const jsonData = {
+                    dimensions: {
+                        width: spriteResult.width,
+                        height: spriteResult.height
+                    },
+                    frames: images.map((img, index) => {
+                        return {
+                            filename: img.name,
+                            frame: {
+                                x: img.position.x,
+                                y: img.position.y,
+                                w: img.width,
+                                h: img.height
+                            },
+                            rotated: false,
+                            trimmed: false,
+                            sourceSize: {
+                                w: img.width,
+                                h: img.height
+                            }
+                        };
+                    })
+                };
+                
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(jsonData, null, 2));
+                const link = document.createElement('a');
+                link.download = 'sprite-sheet.json';
+                link.href = dataStr;
+                link.click();
+            }
+            
+            // Fungsi untuk mengurutkan gambar berdasarkan nama file
+            function sortImagesByName() {
+                if (images.length <= 1) return;
+                
+                // Urutkan array gambar berdasarkan nama file
+                images.sort((a, b) => {
+                    // Ambil nama file saja tanpa ekstensi
+                    const nameA = a.name.toLowerCase();
+                    const nameB = b.name.toLowerCase();
+                    
+                    // Coba deteksi angka di nama file untuk pengurutan numerik
+                    const numA = nameA.match(/\d+/);
+                    const numB = nameB.match(/\d+/);
+                    
+                    // Jika keduanya memiliki angka, bandingkan secara numerik
+                    if (numA && numB) {
+                        const numValA = parseInt(numA[0]);
+                        const numValB = parseInt(numB[0]);
+                        if (numValA !== numValB) {
+                            return numValA - numValB;
+                        }
+                    }
+                    
+                    // Jika tidak ada angka atau angkanya sama, urutkan secara alfabetis
+                    return nameA.localeCompare(nameB);
+                });
+                
+                // Perbarui UI untuk menampilkan urutan baru
+                updateImagesUI();
+                setupDragAndDrop();
+                
+                // Jika sprite sheet sudah ditampilkan, buat ulang
+                if (resultArea.style.display !== 'none') {
+                    generateSpriteSheet();
+                }
+                
+                // Tambahkan animasi highlight pada area sortir
+                const previewArea = document.querySelector('.preview-area');
+                previewArea.style.transition = 'box-shadow 0.3s ease';
+                previewArea.style.boxShadow = '0 0 20px var(--accent-color)';
+                
+                // Hapus highlight setelah beberapa detik
+                setTimeout(() => {
+                    previewArea.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.05)';
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>
