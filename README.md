@@ -20,8 +20,8 @@ Visit [live demo link](https://mukafug.github.io/SpriteSheetGen/) to try the Spr
 ## 📸 Screenshots
 
 <div align="center">
-  <img src="https://imgur.com/0SaDpH0" width="45%" alt="Screenshot 1">
-  <img src="https://imgur.com/O90YJ4y" width="45%" alt="Screenshot 2">
+  <img src="https://i.imgur.com/0SaDpH0.png" width="45%" alt="Screenshot 1">
+  <img src="https://i.imgur.com/O90YJ4y.png" width="45%" alt="Screenshot 2">
 </div>
 
 ## 🛠️ Technology
